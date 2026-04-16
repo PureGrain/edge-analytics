@@ -99,11 +99,11 @@
     ));
 
     if (event === 'session_end') {
-      var blob = new Blob([payload], { type: 'application/json' });
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon(TRACK_URL, blob);
-      } else {
-        try { fetch(TRACK_URL, { method: 'POST', body: payload, headers: { 'Content-Type': 'application/json' }, keepalive: true }); } catch (e) {}
+      try {
+        fetch(TRACK_URL, { method: 'POST', body: payload, headers: { 'Content-Type': 'application/json' }, keepalive: true });
+      } catch (e) {
+        var blob = new Blob([payload], { type: 'application/json' });
+        if (navigator.sendBeacon) navigator.sendBeacon(TRACK_URL, blob);
       }
     } else {
       fetch(TRACK_URL, {
