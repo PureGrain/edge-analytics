@@ -26,7 +26,7 @@ Copy the `database_id` from the output into `wrangler.toml`.
 ### 2. Apply schema
 
 ```bash
-wrangler d1 execute edge-analytics --file=schema/schema.sql
+wrangler d1 execute edge-analytics --remote --file=schema/schema.sql
 ```
 
 ### 3. Configure wrangler.toml
