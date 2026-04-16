@@ -204,11 +204,16 @@
     }
   }
 
+  // pagehide: fires on unload and BFCache entry (most reliable desktop signal).
+  // visibilitychange -> hidden: most reliable mobile/Safari signal when
+  // pagehide/beforeunload may never fire (app switch, tab swipe, force close).
+  // sessionEndSent flag dedupes multiple fires; server dedupes by sessionId.
+  window.addEventListener('pagehide', sendSessionEnd);
   window.addEventListener('beforeunload', sendSessionEnd);
-  window.addEventListener('pagehide', function (e) {
-    if (!e.persisted) { sendSessionEnd(); } else { savePageData(); }
-  });
   document.addEventListener('visibilitychange', function () {
-    if (document.visibilityState === 'hidden') savePageData();
+    if (document.visibilityState === 'hidden') {
+      savePageData();
+      sendSessionEnd();
+    }
   });
 })();
