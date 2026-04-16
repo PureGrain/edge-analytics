@@ -1,0 +1,29 @@
+# Edge Analytics — Wrangler config template
+# Copy this file, fill in your values, and deploy.
+#
+# Setup:
+#   1. Create D1 database:   wrangler d1 create edge-analytics
+#   2. Apply schema:         wrangler d1 execute edge-analytics --file=schema/schema.sql
+#   3. Set secrets:          wrangler secret put ANALYTICS_KEY
+#   4. Deploy:               wrangler deploy
+
+name = "edge-analytics"
+main = "worker/index.js"
+compatibility_date = "2025-01-01"
+workers_dev = true
+
+[vars]
+SITE_NAME = "My Site"
+ALLOWED_ORIGIN = "https://yoursite.com"
+# Set DISCORD_CONVERSIONS = "true" to also fire Discord alerts for conversion events
+# DISCORD_CONVERSIONS = "false"
+
+# D1 database — replace id with output from `wrangler d1 create edge-analytics`
+[[d1_databases]]
+binding = "DB"
+database_name = "edge-analytics"
+database_id = "YOUR_D1_DATABASE_ID"
+
+# Secrets (set via `wrangler secret put <NAME>`):
+#   ANALYTICS_KEY      — Bearer token for GET /analytics and dashboard login
+#   DISCORD_WEBHOOK    — (optional) Discord webhook URL for arrival/session alerts
